@@ -134,7 +134,7 @@ class SortingRobot:
         self.set_light_on()
         while self.light_is_on():
             # we want to turn light off, only turn it on again if a card has been sorted
-            # this was pretty confusing. I tried different ways and this workd
+            # this was pretty confusing. I tried different ways and this worked
             self.set_light_off()
             # as long as it can move right go right, and start comparing
             while self.can_move_right():
@@ -168,6 +168,14 @@ class SortingRobot:
             if self.light_is_on():
                 while self.can_move_left():
                     self.move_left()
+
+        """
+            LIGHT LOOP
+            ON (starts first while) -> OFF (sort cards) -> ON again(if held item is greater than comaparison item) --> IF ON move 
+            left until you can't -> ON start at begining!
+
+        """
+
 
         #! Can definitley do it easier with self._list, lol
         # for i in range(len(self._list)):
