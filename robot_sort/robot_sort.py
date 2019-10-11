@@ -130,9 +130,11 @@ class SortingRobot:
         # self.move_right()
         # [none[0], 3[1], 4[2] 2[3]]
 
-        # want to start with light on to know we are going and to set an end condition
+        # want to start with light on so we can start our loop
         self.set_light_on()
         while self.light_is_on():
+            # we want to turn light off, only turn it on again if a card has been sorted
+            # this was pretty confusing. I tried different ways and this workd
             self.set_light_off()
             # as long as it can move right go right, and start comparing
             while self.can_move_right():
