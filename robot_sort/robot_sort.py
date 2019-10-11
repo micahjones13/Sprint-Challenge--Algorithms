@@ -81,32 +81,112 @@ class SortingRobot:
         Turn on the robot's light
         """
         self._light = "ON"
+
     def set_light_off(self):
         """
         Turn off the robot's light
         """
         self._light = "OFF"
+
     def light_is_on(self):
         """
         Returns True if the robot's light is on and False otherwise.
         """
         return self._light == "ON"
 
+    def move_back_to_start(self):
+        # go back to start
+        while self.can_move_left():
+            self.move_left()
+        # get away from none
+        self.move_right()
+        print(self._position, 'moving left')
+
     def sort(self):
         """
         Sort the robot's list.
+        OK: any methods above
+        OK: for, while, break, continue
+        OK: if and or not
+        OK: < > <= >= ect
+        NOT OK: storing variables
+        NOT OK: self.anything
+        NOT OK: sorted, sort, ect
+        NOT OK: modififying above methods
+
+        PLAN: start at begining of list, pick up that card. Go to next item, compare current card to that card.
+        If current card is greater than that of which we are comparing, move to next item and repeat.
+        If the card we are comparing is greater, swap, and compare that card to the next.
+        Need to check if the robot can move right everytime, though
+        Light might mean working vs finished
         """
         # Fill this out
-        pass
+        # replace none with first item in list, none is always < an actual num
+        # [5, 3, 4, 1, 2]
+        # self.swap_item()
+        # # [none, 3, 4, 1, 2]
+        # # print(self._item)
+        # # move right so he doesn't compare the num he picked up to none
+        # self.move_right()
+        # [none[0], 3[1], 4[2] 2[3]]
+
+        # want to start with light on to know we are going and to set an end condition
+        self.set_light_on()
+        while self.light_is_on():
+            self.set_light_off()
+            # as long as it can move right go right, and start comparing
+            while self.can_move_right():
+                # inital swap to get a value
+                self.swap_item()
+                # move right, don't compare to value you just dropped
+                self.move_right()
+                # if held item is greater, swapt that item, move left and place it there, move back right
+                # if it reaches the end and is greater, turn light on to restart with next value
+                if self.compare_item() == 1:
+                    self.swap_item()
+                    self.move_left()
+                    self.swap_item()
+                    self.move_right()
+                    self.set_light_on()
+                # else if the held item is less than comparison item
+                # place the held item down BEFORE the comparision item
+                # no light change here, we aren't done
+                if self.compare_item() == -1:
+                    self.move_left()
+                    self.swap_item()
+                    self.move_right()
+                # else if item is the same value as comparison
+                # put the held item down by the same value item, move back right to comparison item
+                if self.compare_item() == 0:
+                    self.move_left()
+                    self.swap_item()
+                    self.move_right()
+            # this if keeps the chain moving
+            # light is only on if the one round of sorting is complete,
+            if self.light_is_on():
+                while self.can_move_left():
+                    self.move_left()
+
+        #! Can definitley do it easier with self._list, lol
+        # for i in range(len(self._list)):
+        #     for j in range(0, len(self._list)-1):
+        #         if self._list[j] > self._list[j+1]:
+        #             self._list[j], self._list[j +
+        #                                       1] = self._list[j+1], self._list[j]
+        # return self._list
 
 
 if __name__ == "__main__":
     # Test our your implementation from the command line
     # with `python robot_sort.py`
 
-    l = [15, 41, 58, 49, 26, 4, 28, 8, 61, 60, 65, 21, 78, 14, 35, 90, 54, 5, 0, 87, 82, 96, 43, 92, 62, 97, 69, 94, 99, 93, 76, 47, 2, 88, 51, 40, 95, 6, 23, 81, 30, 19, 25, 91, 18, 68, 71, 9, 66, 1, 45, 33, 3, 72, 16, 85, 27, 59, 64, 39, 32, 24, 38, 84, 44, 80, 11, 73, 42, 20, 10, 29, 22, 98, 17, 48, 52, 67, 53, 74, 77, 37, 63, 31, 7, 75, 36, 89, 70, 34, 79, 83, 13, 57, 86, 12, 56, 50, 55, 46]
+    l = [15, 41, 58, 49, 26, 4, 28, 8, 61, 60, 65, 21, 78, 14, 35, 90, 54, 5, 0, 87, 82, 96, 43, 92, 62, 97, 69, 94, 99, 93, 76, 47, 2, 88, 51, 40, 95, 6, 23, 81, 30, 19, 25, 91, 18, 68, 71, 9, 66, 1,
+         45, 33, 3, 72, 16, 85, 27, 59, 64, 39, 32, 24, 38, 84, 44, 80, 11, 73, 42, 20, 10, 29, 22, 98, 17, 48, 52, 67, 53, 74, 77, 37, 63, 31, 7, 75, 36, 89, 70, 34, 79, 83, 13, 57, 86, 12, 56, 50, 55, 46]
 
-    robot = SortingRobot(l)
-
-    robot.sort()
-    print(robot._list)
+#     robot = SortingRobot(l)
+    small_list = [5, 3, 4, 1, 2]
+    test = SortingRobot(small_list)
+    test.sort()
+    print(test._list)
+    # robot.sort()
+    # print(robot._list)
